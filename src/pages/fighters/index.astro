@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import FighterCard from '../../components/FighterCard.astro';
+import { getCollection } from 'astro:content';
+
+const fighters = await getCollection('fighters');
+// Sort by KDR descending
+fighters.sort((a, b) => b.data.kdr - a.data.kdr);
+---
+
+<BaseLayout title="Fighters" description="Meet the world's most elite renal combat athletes.">
+  <Hero title="FIGHTERS" subtitle="The World's Most Elite Renal Combat Athletes" />
+
+  <section class="fighters-section">
+    <div class="container">
+      <div class="filter-bar">
+        <span class="filter-label">SHOWING</span>
+        <span class="filter-count"><strong>{fighters.length}</strong> of 47 fighters</span>
+      </div>
+      <div class="grid-3">
+        {fighters.map(fighter => (
+          <FighterCard
+            name={fighter.data.name}
+            nickname={fighter.data.nickname}
+            id={fighter.id.replace(/\.md$/, '')}
+            hometown={fighter.data.hometown}
+            record={fighter.data.record}
+            style={fighter.data.style}
+            division={fighter.data.division}
+            kdr={fighter.data.kdr}
+            boi={fighter.data.boi}
+            image={fighter.data.image}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .fighters-section { padding: 3rem 0 5rem; }
+
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .filter-label {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.1em;
+  }
+
+  .filter-count {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  .filter-count strong { color: var(--color-accent); }
+</style>

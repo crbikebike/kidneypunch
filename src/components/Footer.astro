@@ -1,0 +1,152 @@
+---
+const base = import.meta.env.BASE_URL;
+const navLinks = [
+  { label: 'Home', href: `${base}` },
+  { label: 'About', href: `${base}about/` },
+  { label: 'Fighters', href: `${base}fighters/` },
+  { label: 'Events', href: '#' },
+  { label: 'Rankings', href: '#' },
+  { label: 'News', href: '#' },
+  { label: 'Rules', href: '#' },
+  { label: 'Watch', href: '#' },
+];
+
+const socialLinks = [
+  { label: 'ToughTube', href: '#' },
+  { label: 'Instagram', href: '#' },
+  { label: 'X (Twitter)', href: '#' },
+  { label: 'Facebook', href: '#' },
+];
+
+const moreLinks = [
+  { label: 'Betting', href: '#' },
+  { label: 'Shop', href: '#' },
+  { label: 'Casting', href: '#' },
+  { label: 'Contact', href: '#' },
+];
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">THE KIDNEY PUNCH LEAGUE</div>
+        <div class="footer-tagline">"Two Men Enter. One Man Pisses Blood."</div>
+        <div class="footer-sponsors">
+          <strong>Official Partners:</strong><br />
+          Creature Energy · KidneyChain · GutCheck Wagering · Urobet · 15 Billion Health · Patriot Beef Jerky · Abu Dabi Wellness & Combat Festival · Tac-Light
+        </div>
+      </div>
+      <div>
+        <h4>NAVIGATE</h4>
+        <ul class="footer-links">
+          {navLinks.map(link => <li><a href={link.href}>{link.label}</a></li>)}
+        </ul>
+      </div>
+      <div>
+        <h4>CONNECT</h4>
+        <ul class="footer-links">
+          {socialLinks.map(link => <li><a href={link.href}>{link.label}</a></li>)}
+        </ul>
+        <h4 style="margin-top: 1.5rem;">MORE</h4>
+        <ul class="footer-links">
+          {moreLinks.map(link => <li><a href={link.href}>{link.label}</a></li>)}
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copyright">&copy; 2026 Kidney Punch League. All Rights Reserved.</div>
+      <div class="footer-legal">
+        The KPL is provisionally sanctioned in Nevada, Arizona, and Montana. Not recognized by any international sports federation, medical association, or the Olympics (yet). Kidney punching is inherently dangerous. Do not attempt at home, at work, or in an Applebee's parking lot.
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: #050505;
+    border-top: 1px solid var(--color-border);
+    padding: 3rem 0 1.5rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 2rem;
+  }
+
+  .footer-brand {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--color-primary);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-tagline {
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .footer-sponsors {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    line-height: 2;
+  }
+
+  .footer-sponsors strong {
+    color: var(--color-text);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  h4 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--color-text);
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+
+  .footer-links { list-style: none; }
+
+  .footer-links li { margin-bottom: 0.5rem; }
+
+  .footer-links a {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+
+  .footer-links a:hover { color: var(--color-accent); }
+
+  .footer-bottom {
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-copyright { font-size: 0.7rem; color: var(--color-text-muted); }
+
+  .footer-legal {
+    font-size: 0.65rem;
+    color: #555;
+    max-width: 600px;
+    text-align: right;
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  @media (max-width: 768px) {
+    .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-legal { text-align: left; }
+  }
+</style>

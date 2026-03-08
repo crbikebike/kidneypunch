@@ -1,0 +1,164 @@
+---
+const base = import.meta.env.BASE_URL;
+const currentPath = Astro.url.pathname;
+
+const links = [
+  { label: 'HOME', href: `${base}` },
+  { label: 'ABOUT', href: `${base}about/` },
+  { label: 'FIGHTERS', href: `${base}fighters/` },
+  { label: 'EVENTS', href: '#' },
+  { label: 'RANKINGS', href: '#' },
+  { label: 'NEWS', href: '#' },
+  { label: 'RULES', href: '#' },
+  { label: 'WATCH', href: '#' },
+  { label: 'BETTING', href: '#' },
+];
+---
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href={base} class="nav-brand">
+      <img src={`${base}images/logos/horizontal.png`} alt="The Kidney Punch League" class="nav-logo-img" />
+    </a>
+
+    <input type="checkbox" id="nav-toggle" class="nav-toggle-input sr-only" />
+    <label for="nav-toggle" class="nav-toggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </label>
+
+    <ul class="nav-links">
+      {links.map(link => (
+        <li>
+          <a href={link.href} class={currentPath === link.href ? 'active' : ''}>
+            {link.label}
+          </a>
+        </li>
+      ))}
+      <li><a href="#" class="nav-cta">WATCH FREE ON TOUGHTUBE</a></li>
+    </ul>
+  </div>
+</nav>
+
+<style>
+  .nav {
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+  }
+
+  .nav-brand {
+    text-decoration: none;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .nav-logo-img {
+    height: 50px;
+    width: auto;
+    display: block;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--color-text);
+    letter-spacing: 0.08em;
+    padding: 0.5rem 0.75rem;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--color-accent); }
+  .nav-links a.active { color: var(--color-primary); }
+
+  .nav-cta {
+    color: var(--color-text) !important;
+    background: var(--color-primary);
+    padding: 0.5rem 1.25rem !important;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem !important;
+    white-space: nowrap;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--color-primary-hover); color: var(--color-text) !important; }
+
+  .nav-toggle { display: none; }
+  .nav-toggle-input { display: none; }
+
+  @media (max-width: 1024px) {
+    .nav-toggle {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 0.5rem;
+      z-index: 101;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--color-text);
+      transition: all 0.3s;
+    }
+
+    .nav-links {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 280px;
+      height: 100vh;
+      background: var(--color-surface);
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 5rem 2rem 2rem;
+      gap: 0;
+      transition: right 0.3s;
+      border-left: 1px solid var(--color-border);
+    }
+
+    .nav-links li { width: 100%; }
+
+    .nav-links a {
+      display: block;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .nav-cta {
+      margin-top: 1rem;
+      text-align: center;
+      display: block !important;
+    }
+
+    .nav-toggle-input:checked ~ .nav-links {
+      right: 0;
+    }
+
+    .nav-toggle-input:checked ~ .nav-toggle span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .nav-toggle-input:checked ~ .nav-toggle span:nth-child(2) {
+      opacity: 0;
+    }
+    .nav-toggle-input:checked ~ .nav-toggle span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+  }
+</style>

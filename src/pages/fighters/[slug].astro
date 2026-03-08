@@ -1,0 +1,319 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const fighters = await getCollection('fighters');
+  return fighters.map(fighter => ({
+    params: { slug: fighter.id.replace(/\.md$/, '') },
+    props: { fighter },
+  }));
+}
+
+const base = import.meta.env.BASE_URL;
+const { fighter } = Astro.props;
+const { data } = fighter;
+const { Content } = await fighter.render();
+const recordStr = data.record.draws > 0
+  ? `${data.record.wins}-${data.record.losses}-${data.record.draws}`
+  : `${data.record.wins}-${data.record.losses}`;
+---
+
+<BaseLayout title={`${data.name} - "${data.nickname}"`} description={`${data.name} "${data.nickname}" - ${data.style}. Record: ${recordStr}. KDR: ${data.kdr}.`}>
+  <!-- Fighter Hero -->
+  <section class="fighter-hero">
+    <div class="container fighter-hero-inner">
+      <div class="fighter-hero-image">
+        <img src={`${base}${data.image.replace(/^\//, '')}`} alt={data.name} />
+      </div>
+      <div class="fighter-hero-info">
+        <div class="fighter-division-badge">{data.division}</div>
+        <div class="fighter-ranking">{data.ranking}</div>
+        <div class="fighter-nickname">"{data.nickname}"</div>
+        <h1 class="fighter-name">{data.name.toUpperCase()}</h1>
+        <div class="fighter-hometown">{data.hometown}</div>
+
+        <div class="fighter-stats-row">
+          <div class="fighter-stat-big">
+            <div class="fighter-stat-big-value">{recordStr}</div>
+            <div class="fighter-stat-big-label">Record</div>
+          </div>
+          <div class="fighter-stat-big">
+            <div class="fighter-stat-big-value">{data.kdr}</div>
+            <div class="fighter-stat-big-label">KDR</div>
+          </div>
+          <div class="fighter-stat-big">
+            <div class="fighter-stat-big-value">{data.boi}</div>
+            <div class="fighter-stat-big-label">BOI</div>
+          </div>
+        </div>
+
+        <div class="fighter-quote">"{data.quotes.intro}"</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fighter Details -->
+  <section class="section">
+    <div class="container fighter-details">
+      <div class="fighter-details-grid">
+        <!-- Left column: bio + stats table -->
+        <div>
+          <h2>ABOUT</h2>
+          <div class="fighter-bio">
+            <Content />
+          </div>
+
+          <h3>VITAL STATS</h3>
+          <table>
+            <tbody>
+              <tr><td>Age</td><td>{data.age}</td></tr>
+              <tr><td>Height</td><td>{data.height}</td></tr>
+              <tr><td>Weight</td><td>{data.weight} lbs</td></tr>
+              <tr><td>Division</td><td>{data.division}</td></tr>
+              <tr><td>Fighting Style</td><td>{data.style}</td></tr>
+              <tr><td>Entrance Music</td><td>{data.entranceMusic}</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Right column: special move, weakness, training, quotes -->
+        <div>
+          <h3>SPECIAL MOVE</h3>
+          <div class="special-move">
+            <div class="special-move-name">{data.specialMove.name}</div>
+            <p>{data.specialMove.description}</p>
+          </div>
+
+          <h3>TACTICAL ANALYSIS</h3>
+          <div class="weakness">
+            <strong>Known Vulnerability:</strong> {data.weakness}
+          </div>
+
+          <h3>TRAINING REGIMEN</h3>
+          <ul class="training-list">
+            {data.training.map(item => <li>{item}</li>)}
+          </ul>
+
+          <h3>QUOTES</h3>
+          <div class="fighter-quotes">
+            <blockquote>"{data.quotes.intro}"<cite>— Pre-fight</cite></blockquote>
+            <blockquote>"{data.quotes.postWin}"<cite>— Post-win</cite></blockquote>
+            {data.quotes.extra && <blockquote>"{data.quotes.extra}"</blockquote>}
+          </div>
+        </div>
+      </div>
+
+      <div class="back-link">
+        <a href={`${base}fighters/`}>← BACK TO ALL FIGHTERS</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .fighter-hero {
+    background: linear-gradient(180deg, #111 0%, var(--color-bg) 100%);
+    padding: 3rem 0;
+  }
+
+  .fighter-hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .fighter-hero-image {
+    aspect-ratio: 3/4;
+    background: linear-gradient(135deg, #1A1A1A 0%, #111 100%);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .fighter-hero-image::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--color-primary);
+  }
+
+  .fighter-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  .fighter-division-badge {
+    font-size: 0.65rem;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    border: 1px solid rgba(197, 166, 61, 0.3);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--border-radius);
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+
+  .fighter-ranking {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .fighter-nickname {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-accent);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+  }
+
+  .fighter-name {
+    font-size: 3.5rem;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .fighter-hometown {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .fighter-stats-row {
+    display: flex;
+    gap: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .fighter-stat-big-value {
+    font-family: var(--font-display);
+    font-size: 2rem;
+  }
+
+  .fighter-stat-big-label {
+    font-size: 0.6rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .fighter-quote {
+    font-style: italic;
+    color: var(--color-text-muted);
+    font-size: 1.1rem;
+    border-left: 3px solid var(--color-primary);
+    padding-left: 1rem;
+  }
+
+  .fighter-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .fighter-bio {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: var(--color-accent);
+  }
+
+  .special-move-name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .special-move p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+
+  .weakness {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    padding: 1rem;
+    background: var(--color-surface);
+    border-radius: var(--border-radius);
+    border-left: 3px solid var(--color-accent);
+  }
+
+  .weakness strong { color: var(--color-text); }
+
+  .training-list {
+    list-style: none;
+    margin: 0;
+  }
+
+  .training-list li {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-border);
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .training-list li::before {
+    content: '▸';
+    color: var(--color-primary);
+    position: absolute;
+    left: 0;
+  }
+
+  .fighter-quotes blockquote {
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    border-left: 3px solid var(--color-primary);
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .fighter-quotes cite {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    margin-top: 0.25rem;
+    font-style: normal;
+  }
+
+  .back-link {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .back-link a {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    color: var(--color-accent);
+  }
+
+  .back-link a:hover { color: var(--color-text); }
+
+  @media (max-width: 768px) {
+    .fighter-hero-inner { grid-template-columns: 1fr; }
+    .fighter-name { font-size: 2.5rem; }
+    .fighter-details-grid { grid-template-columns: 1fr; }
+  }
+</style>

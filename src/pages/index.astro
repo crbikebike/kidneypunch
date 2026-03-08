@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import StatsBar from '../components/StatsBar.astro';
+import EventCard from '../components/EventCard.astro';
+import NewsCard from '../components/NewsCard.astro';
+import FighterSpotlight from '../components/FighterSpotlight.astro';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
+import { latestNews } from '../data/news';
+import { nextEvent } from '../data/events';
+
+const base = import.meta.env.BASE_URL;
+const actionShots = [
+  `${base}images/action-shots/action1.png`,
+  `${base}images/action-shots/action2.png`,
+  `${base}images/action-shots/action3.png`,
+  `${base}images/action-shots/action4.png`,
+];
+---
+
+<BaseLayout title="Home">
+  <Hero
+    title="KPL 5:<br>JUDGMENT DAY"
+    venue={`Live from ${nextEvent.venue}`}
+    location={nextEvent.location}
+    date={`${nextEvent.date} · ${nextEvent.time}`}
+    presenter={nextEvent.presenter}
+    badge="FREE ON TOUGHTUBE"
+    cta1={{ text: 'WATCH FREE', href: '#' }}
+    cta2={{ text: 'GET TICKETS — $45', href: '#' }}
+    actionShots={actionShots}
+  />
+
+  <StatsBar />
+
+  <EventCard />
+
+  <!-- As Seen On -->
+  <section class="as-seen-on">
+    <div class="container">
+      <h3>WATCH EVERY EVENT FREE ON GRIT TV & TOUGHTUBE</h3>
+      <p>Available in 4.2 million American households and wherever you get internet</p>
+    </div>
+  </section>
+
+  <!-- News -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">LATEST <span class="text-primary">NEWS</span></h2>
+      <div class="grid-3">
+        {latestNews.map(article => (
+          <NewsCard headline={article.headline} summary={article.summary} href={article.href} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <FighterSpotlight
+    name="Kaleo Ka'ahumanu"
+    nickname="Reef Hammer"
+    record="29-6"
+    kdr={8.9}
+    boi={6.4}
+    quote="Wave come fast. Punch come faster."
+    bio="The Hawaiian sensation has won his last four bouts, three by hematuria stoppage. A former outrigger canoe champion from the Big Island, Ka'ahumanu is the youngest champion in KPL history."
+    id="kaleo-kaahumanu"
+    image="/images/profiles/kaleo-kaahumanu.png"
+  />
+
+  <NewsletterSignup />
+</BaseLayout>
+
+<style>
+  .as-seen-on {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    padding: 2rem 0;
+    text-align: center;
+  }
+
+  .as-seen-on h3 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    letter-spacing: 0.05em;
+  }
+
+  .as-seen-on p {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-top: 0.25rem;
+  }
+
+  .section-title {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+
+</style>
+
+<script>
+  // Create splash overlay via JS to avoid Astro scoping issues
+  const splash = document.createElement('div');
+  splash.id = 'kpl-splash';
+  const base = document.querySelector('meta[name="base-url"]')?.getAttribute('content') || '/';
+  splash.innerHTML = `<img src="${base}images/logos/primary.png" alt="KPL" />`;
+
+  const s = document.createElement('style');
+  s.textContent = `
+    #kpl-splash {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #0A0A0A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #kpl-splash img {
+      width: min(60vw, 400px);
+      height: auto;
+      opacity: 0;
+      transform: scale(0.8);
+      animation: kpl-splash-in 1s ease-out 0.3s forwards;
+    }
+    @keyframes kpl-splash-in {
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes kpl-splash-out {
+      to { opacity: 0; }
+    }
+  `;
+  document.head.appendChild(s);
+  document.body.prepend(splash);
+
+  setTimeout(() => {
+    splash.style.animation = 'kpl-splash-out 0.5s ease-out forwards';
+    splash.addEventListener('animationend', () => splash.remove());
+  }, 2200);
+</script>

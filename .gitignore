@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.astro/
+
+# Context/planning files - not part of the website
+/assets/
+/content/
+/mockups/
+/plans/
+/thekpl-fighters.md
+/README.md
+.claude/

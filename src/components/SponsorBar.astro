@@ -1,0 +1,49 @@
+---
+import { sponsors } from '../data/sponsors';
+const doubled = [...sponsors, ...sponsors];
+---
+
+<div class="sponsor-bar">
+  <div class="sponsor-bar-inner">
+    {doubled.map((s, i) => (
+      <Fragment>
+        <span>{s}</span>
+        {i < doubled.length - 1 && <span class="sep">|</span>}
+      </Fragment>
+    ))}
+  </div>
+</div>
+
+<style>
+  .sponsor-bar {
+    background: #050505;
+    border-bottom: 1px solid var(--color-border);
+    overflow: hidden;
+    padding: 0.5rem 0;
+    white-space: nowrap;
+  }
+
+  .sponsor-bar-inner {
+    display: inline-block;
+    animation: scroll-sponsors 30s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sponsor-bar-inner { animation: none; }
+  }
+
+  @keyframes scroll-sponsors {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .sponsor-bar span {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding: 0 1.5rem;
+  }
+
+  .sponsor-bar .sep { color: #333; padding: 0; }
+</style>

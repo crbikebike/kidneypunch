@@ -1,0 +1,171 @@
+---
+interface Props {
+  name: string;
+  nickname: string;
+  id: string;
+  hometown: string;
+  record: { wins: number; losses: number; draws: number };
+  style: string;
+  division: string;
+  kdr: number;
+  boi: number;
+  image: string;
+}
+
+const base = import.meta.env.BASE_URL;
+const { name, nickname, id, hometown, record, style, division, kdr, boi, image } = Astro.props;
+const recordStr = record.draws > 0 ? `${record.wins}-${record.losses}-${record.draws}` : `${record.wins}-${record.losses}`;
+---
+
+<a href={`${base}fighters/${id}/`} class="fighter-card">
+  <div class="fighter-card-image">
+    <img src={`${base}${image.replace(/^\//, '')}`} alt={name} loading="lazy" />
+  </div>
+  <div class="fighter-card-body">
+    <div class="fighter-card-nickname">"{nickname}"</div>
+    <div class="fighter-card-name">{name.toUpperCase()}</div>
+    <div class="fighter-card-hometown">{hometown}</div>
+    <div class="fighter-card-stats">
+      <div class="fighter-card-stat">
+        <div class="fighter-card-stat-value">{recordStr}</div>
+        <div class="fighter-card-stat-label">Record</div>
+      </div>
+      <div class="fighter-card-stat">
+        <div class="fighter-card-stat-value">{kdr}</div>
+        <div class="fighter-card-stat-label">KDR</div>
+      </div>
+      <div class="fighter-card-stat">
+        <div class="fighter-card-stat-value">{boi}</div>
+        <div class="fighter-card-stat-label">BOI</div>
+      </div>
+    </div>
+    <div class="fighter-card-meta">
+      <span class="fighter-card-style">{style}</span>
+      <span class="fighter-card-division">{division}</span>
+    </div>
+  </div>
+</a>
+
+<style>
+  .fighter-card {
+    background: var(--color-surface);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .fighter-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(139, 0, 0, 0.3);
+  }
+
+  .fighter-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius);
+    transition: border-color 0.2s;
+    pointer-events: none;
+  }
+
+  .fighter-card:hover::after { border-color: var(--color-primary); }
+
+  .fighter-card-image {
+    aspect-ratio: 3/4;
+    background: linear-gradient(145deg, #1A1A1A 0%, #0F0F0F 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .fighter-card-image::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--color-primary);
+    z-index: 1;
+  }
+
+  .fighter-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 0.3s;
+  }
+
+  .fighter-card:hover .fighter-card-image img { transform: scale(1.05); }
+
+  .fighter-card-body { padding: 1.25rem; }
+
+  .fighter-card-nickname {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.15rem;
+  }
+
+  .fighter-card-name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    letter-spacing: 0.03em;
+    line-height: 1.1;
+    margin-bottom: 0.35rem;
+  }
+
+  .fighter-card-hometown {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .fighter-card-stats {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .fighter-card-stat-value {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+  }
+
+  .fighter-card-stat-label {
+    font-size: 0.55rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .fighter-card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--color-border);
+    padding-top: 0.75rem;
+  }
+
+  .fighter-card-style {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .fighter-card-division {
+    font-size: 0.65rem;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border: 1px solid rgba(197, 166, 61, 0.3);
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--border-radius);
+  }
+</style>

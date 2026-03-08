@@ -1,0 +1,51 @@
+---
+interface Props {
+  headline: string;
+  summary: string;
+  href: string;
+}
+
+const { headline, summary, href } = Astro.props;
+---
+
+<div class="news-card">
+  <div class="news-card-headline">{headline}</div>
+  <div class="news-card-summary">{summary}</div>
+  <a href={href} class="news-card-link">READ MORE →</a>
+</div>
+
+<style>
+  .news-card {
+    background: var(--color-surface);
+    border-top: 3px solid var(--color-primary);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .news-card-headline {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    letter-spacing: 0.03em;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+
+  .news-card-summary {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    flex: 1;
+    margin-bottom: 1rem;
+  }
+
+  .news-card-link {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    letter-spacing: 0.08em;
+  }
+
+  .news-card-link:hover { color: var(--color-text); }
+</style>

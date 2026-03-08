@@ -1,0 +1,42 @@
+export const nextEvent = {
+  name: 'KPL 5: JUDGMENT DAY',
+  date: 'Saturday, April 12, 2026',
+  time: '9PM ET / 6PM PT',
+  venue: 'The Nugget Casino Convention Center',
+  location: 'Reno, NV',
+  presenter: 'KidneyChain',
+  badge: 'Super Heavyweight Championship',
+  matchups: [
+    {
+      label1: 'Main Event · Champion',
+      fighter1: 'Colton "Ice Barrel" Bjornson',
+      odds1: '-140',
+      label2: '#1 Contender',
+      fighter2: 'Viktor "Stone Kidney" Dragovic',
+      odds2: '+120',
+    },
+    {
+      label1: 'Co-Main Event',
+      fighter1: 'Buck "Sidewinder" McCrae',
+      odds1: '+145',
+      label2: 'Cross-Division Superfight',
+      fighter2: 'Kaleo "Reef Hammer" Ka\'ahumanu',
+      odds2: '-165',
+    },
+    {
+      label1: 'Main Card',
+      fighter1: 'Daryl "Possum Grip" Hensley',
+      odds1: '-110',
+      label2: 'Heavyweight',
+      fighter2: 'Nigel "The Organ Grinder" Pritchard',
+      odds2: '-110',
+    },
+  ],
+  propBet: {
+    text: 'Visible hematuria before Round 4?',
+    yes: 'YES -200',
+    no: 'NO +170',
+    via: 'Urobet',
+  },
+  oddsProvider: 'GutCheck Wagering',
+};
