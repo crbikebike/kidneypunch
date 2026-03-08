@@ -16,7 +16,7 @@ specialMove:
 weakness: "Sometimes dances mid-round. If his entrance music is still in his head, Ka'ahumanu has been known to hula-step between strikes, giving opponents time to recover."
 entranceMusic: "Island percussion with heavy bass and a conch shell horn. His corner includes a man with a ukulele."
 quotes:
-  intro: "Wave come fast. Punch come faster."
+  intro: "Waves come fast. Punches come faster."
   postWin: "Aloha… and hydrate."
   extra: "My uncle says the kidney is the seat of courage. I'm just testing that theory."
 training:
